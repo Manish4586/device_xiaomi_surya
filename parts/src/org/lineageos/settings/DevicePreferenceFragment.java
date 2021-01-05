@@ -29,7 +29,8 @@ import androidx.preference.SwitchPreference;
 import org.lineageos.settings.utils.RefreshRateUtils;
 
 public class DevicePreferenceFragment extends PreferenceFragment {
-    private static final String OVERLAY_NO_FILL_PACKAGE = "org.lineageos.overlay.notch.nofill";
+    private static final String OVERLAY_NO_FILL_PACKAGE = "me.waveproject.overlay.notch.hide";
+    private static final String OVERLAY_NO_FILL_PACKAGE_SYSTEMUI = "me.waveproject.overlay.notch.hide.systemui";
 
     private static final String KEY_MIN_REFRESH_RATE = "pref_min_refresh_rate";
     private static final String KEY_PILL_STYLE_NOTCH = "pref_pill_style_notch";
@@ -63,7 +64,8 @@ public class DevicePreferenceFragment extends PreferenceFragment {
         mPrefMinRefreshRate.setSummary(mPrefMinRefreshRate.getEntry());
         try {
             mPrefPillStyleNotch.setChecked(
-                    !mOverlayService.getOverlayInfo(OVERLAY_NO_FILL_PACKAGE, 0).isEnabled());
+                    !mOverlayService.getOverlayInfo(OVERLAY_NO_FILL_PACKAGE, 0).isEnabled()
+                    && !mOverlayService.getOverlayInfo(OVERLAY_NO_FILL_PACKAGE_SYSTEMUI, 0).isEnabled());
         } catch (RemoteException e) {
             // We can do nothing
         }
@@ -86,6 +88,8 @@ public class DevicePreferenceFragment extends PreferenceFragment {
                         try {
                             mOverlayService.setEnabled(
                                     OVERLAY_NO_FILL_PACKAGE, !(boolean) value, 0);
+                            mOverlayService.setEnabled(
+                                    OVERLAY_NO_FILL_PACKAGE_SYSTEMUI, !(boolean) value, 0);
                         } catch (RemoteException e) {
                             // We can do nothing
                         }
