@@ -7,13 +7,24 @@
 # Inherit from surya device
 $(call inherit-product, device/xiaomi/surya/device.mk)
 
-# Inherit some common WaveOS stuff
+# Inherit from those products. Most specific first.
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+
+# Gapps
+USE_GAPPS := true
+IS_PHONE := true
+TARGET_GAPPS_ARCH := arm64
 TARGET_BOOT_ANIMATION_RES := 1080
-WAVE_BUILD_TYPE := OFFICIAL
-$(call inherit-product, vendor/wave/configs/common.mk)
+
+# Maintainer
+ROHIE_MAINTAINER := Manish4586
+ROHIE_BUILD_TYPE := OFFICIAL
+# Inherit aosp product configuration
+$(call inherit-product, vendor/aosp/config/common.mk)
 
 # Device identifier. This must come after all inclusions.
-PRODUCT_NAME := wave_surya
+PRODUCT_NAME := aosp_surya
 PRODUCT_DEVICE := surya
 PRODUCT_BRAND := POCO
 PRODUCT_MODEL := POCO X3
